@@ -12,4 +12,10 @@ public class ExampleTest
     {
         assertEquals(1, 1);
     }
+
+    @Test
+    public void showWelcomeMessage()
+    {
+
+    }
 }
