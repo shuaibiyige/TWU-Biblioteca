@@ -14,11 +14,6 @@ public class BookstorageTest
     {
         List<Book> actual = BookStorage.getBookList();
 
-        for (Book book: actual)
-        {
-            System.out.println(book.toString());
-        }
-
         assertThat(actual, hasItems(
                 new Book("Patricia Aakhus", 1990),
                 new Book("Lynn Abbey", 1945),
