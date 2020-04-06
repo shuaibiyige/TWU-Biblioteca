@@ -15,8 +15,8 @@ public class BookstorageTest
         List<Book> actual = BookStorage.getBookList();
 
         assertThat(actual, hasItems(
-                new Book("Patricia Aakhus", 1990),
-                new Book("Lynn Abbey", 1945),
-                new Book("Megan Abbott", 1996)));
+                new Book("book1", "Patricia Aakhus", 1990),
+                new Book("book2", "Lynn Abbey", 1945),
+                new Book("book3", "Megan Abbott", 1996)));
     }
 }

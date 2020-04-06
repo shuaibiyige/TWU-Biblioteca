@@ -5,12 +5,22 @@ import java.util.Objects;
 
 public class Book
 {
+    private String name;
     private String author;
     private int publishedYear;
 
-    public Book(String author, int publishedYear) {
+    public Book(String name, String author, int publishedYear) {
+        this.name = name;
         this.author = author;
         this.publishedYear = publishedYear;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAuthor() {
@@ -31,10 +41,10 @@ public class Book
 
     @Override
     public String toString() {
-        return "Book{" +
-                "author='" + author + '\'' +
-                ", publishedYear=" + publishedYear +
-                '}';
+        return "Book " +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", publishedYear=" + publishedYear;
     }
 
     @Override
@@ -43,11 +53,12 @@ public class Book
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
         return publishedYear == book.publishedYear &&
+                name.equals(book.name) &&
                 author.equals(book.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, publishedYear);
+        return Objects.hash(name, author, publishedYear);
     }
 }

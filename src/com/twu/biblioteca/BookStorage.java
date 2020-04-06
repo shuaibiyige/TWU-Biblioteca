@@ -11,9 +11,9 @@ public class BookStorage
     {
         bookList = new ArrayList<Book>();
 
-        Book book1 = new Book("Patricia Aakhus", 1990);
-        Book book2 = new Book("Lynn Abbey", 1945);
-        Book book3 = new Book("Megan Abbott", 1996);
+        Book book1 = new Book("book1", "Patricia Aakhus", 1990);
+        Book book2 = new Book("book2", "Lynn Abbey", 1945);
+        Book book3 = new Book("book3", "Megan Abbott", 1996);
 
         bookList.add(book1);
         bookList.add(book2);

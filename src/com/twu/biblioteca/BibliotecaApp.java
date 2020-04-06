@@ -1,6 +1,8 @@
 package com.twu.biblioteca;
 
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Scanner;
 
 public class BibliotecaApp
@@ -13,23 +15,32 @@ public class BibliotecaApp
 
     public void appStart()
     {
-        Scanner console = new Scanner(System.in);
         PrintStream printStream = new PrintStream(System.out);
 
         showWelcome(printStream);
-        showMenu();
+        while (true)
+            if ("a".equalsIgnoreCase(showMenu(printStream, System.in)))
+                viewBooks(printStream);
     }
 
     public void showWelcome(PrintStream printStream)
     {
-        printStream.println("Welcome to Biblioteca!!");
+        printStream.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
     }
 
-    /**
-     * to do
-     */
-    public void showMenu()
+    public String showMenu(PrintStream printStream, InputStream inputStream)
     {
+        printStream.println("A. List of books");
+        String choice = new Scanner(System.in).nextLine();
+        return choice;
+    }
 
+    public void viewBooks(PrintStream printStream)
+    {
+        List<Book> bookList = BookStorage.getBookList();
+        for(Book book: bookList)
+        {
+            printStream.println(book.toString());
+        }
     }
 }
