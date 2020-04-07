@@ -20,6 +20,7 @@ public class BibliotecaApp
     public void appStart()
     {
         bookStorage = new BookStorage();
+        bookList = bookStorage.getBookList();
         PrintStream printStream = new PrintStream(System.out);
         InputStream inputStream = System.in;
         Scanner console = new Scanner(inputStream);
@@ -32,10 +33,16 @@ public class BibliotecaApp
 
             if ("a".equalsIgnoreCase(UserInput))
                 viewBooks(printStream);                  // show book list
+
             if ("b".equalsIgnoreCase(UserInput))
-                checkout(console);                       // check out a book by typing the name of the book
+                if (checkout(bookStorage, bookList, printStream, console) == 0)          // check out successfully
+                    printStream.println("Thank you! Enjoy the book");
+                else
+                    printStream.println("Sorry, that book is not available");      // check out unsuccessfully
+
             if ("c".equalsIgnoreCase(UserInput))
                 break;                                   // quit
+
             else
                 notifyInvalidMessage(printStream);       // show notification
         }
@@ -49,7 +56,8 @@ public class BibliotecaApp
     public void showMenu(PrintStream printStream)
     {
         printStream.println("A. List of books");
-        printStream.println("B. Quit");
+        printStream.println("B. Check out a book");
+        printStream.println("C. Quit");
     }
 
     public String getUserInput(Scanner console)
@@ -59,7 +67,6 @@ public class BibliotecaApp
 
     public void viewBooks(PrintStream printStream)
     {
-        bookList = bookStorage.getBookList();
         for(Book book: bookList)
         {
             printStream.println(book.toString());
@@ -71,10 +78,13 @@ public class BibliotecaApp
         printStream.println("Please select a valid option!");
     }
 
-    public int checkout(Scanner console)
+    public int checkout(BookStorage bookStorage, Collection<Book> bookList, PrintStream printStream, Scanner console)
     {
+        printStream.println("Please select a book");
+
         String name = console.nextLine();
-        if (bookList.contains(bookStorage.getBookByName(name)))
+
+        if (isBookNameValid(bookList, name) && bookList.contains(bookStorage.getBookByName(name)))
         {
             bookStorage.removeBook(name);
             return 0;                       // remove successfully
@@ -82,4 +92,17 @@ public class BibliotecaApp
         else
             return 1;                       // remove unsuccessfully
     }
+
+    public boolean isBookNameValid(Collection<Book> bookList, String name)
+    {
+        boolean result = false;
+        for (Book book: bookList)
+        {
+            if (name.equals(book.getName()))
+                result = true;
+        }
+        return result;
+    }
+
+    
 }

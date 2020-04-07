@@ -21,12 +21,16 @@ public class ExampleTest
 {
     private BibliotecaApp bibliotecaApp;
     private PrintStream printStream;
+    private Collection<Book> actual;
+    private BookStorage bookStorage;
 
     @Before
     public void init()
     {
         printStream = mock(PrintStream.class);
         bibliotecaApp = new BibliotecaApp();
+        actual = new BookStorage().getBookList();
+        bookStorage = new BookStorage();
     }
     @Test
     public void shouldShowWelcomeMessage()
@@ -57,7 +61,6 @@ public class ExampleTest
     @Test
     public void shouldShowBookList()
     {
-        Collection<Book> actual = new BookStorage().getBookList();
         bibliotecaApp.viewBooks(printStream);
 
         for(Book book: actual)
@@ -71,5 +74,21 @@ public class ExampleTest
     {
         bibliotecaApp.notifyInvalidMessage(printStream);
         verify(printStream).println("Please select a valid option!");
+    }
+
+    @Test
+    public void shouldReturnFalseWhenBookNameIsNotValid()
+    {
+        assertThat(bibliotecaApp.isBookNameValid(actual,"aa"), is(false));
+    }
+
+    @Test
+    public void shouldReturn0WhenCheckoutAValidBook()
+    {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("book1".getBytes());
+        System.setIn(inputStream);
+
+        int result = bibliotecaApp.checkout(bookStorage, actual, printStream, new Scanner(inputStream));
+        assertThat(result, is(0));
     }
 }
