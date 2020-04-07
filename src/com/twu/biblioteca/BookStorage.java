@@ -31,6 +31,11 @@ public class BookStorage
         bookList.remove(name);
     }
 
+    public void addBook(Book book)
+    {
+        bookList.put(book.getName(), book);
+    }
+
     public Book getBookByName(String name)
     {
         return bookList.get(name);

@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
@@ -23,14 +25,22 @@ public class ExampleTest
     private PrintStream printStream;
     private Collection<Book> actual;
     private BookStorage bookStorage;
+    private BorrowedBook borrowedBooks;
 
     @Before
     public void init()
     {
         printStream = mock(PrintStream.class);
         bibliotecaApp = new BibliotecaApp();
-        actual = new BookStorage().getBookList();
-        bookStorage = new BookStorage();
+
+        bibliotecaApp.setBookStorage(new BookStorage());
+        bookStorage = bibliotecaApp.getBookStorage();
+
+        bibliotecaApp.setBorrowedBooks(new BorrowedBook());
+        borrowedBooks = bibliotecaApp.getBorrowedBooks();
+
+        bibliotecaApp.setBookList(bookStorage.getBookList());
+        actual = bibliotecaApp.getBookList();
     }
     @Test
     public void shouldShowWelcomeMessage()
@@ -45,7 +55,9 @@ public class ExampleTest
     {
         bibliotecaApp.showMenu(printStream);
         verify(printStream).println("A. List of books");
-        verify(printStream).println("B. Quit");
+        verify(printStream).println("B. Check out a book");
+        verify(printStream).println("C. Return a book");
+        verify(printStream).println("D. Quit");
     }
 
     @Test
@@ -88,7 +100,30 @@ public class ExampleTest
         ByteArrayInputStream inputStream = new ByteArrayInputStream("book1".getBytes());
         System.setIn(inputStream);
 
-        int result = bibliotecaApp.checkout(bookStorage, actual, printStream, new Scanner(inputStream));
+        int result = bibliotecaApp.checkout(bookStorage, borrowedBooks, actual, printStream, new Scanner(inputStream));
+        assertThat(result, is(0));
+    }
+
+    @Test
+    public void shouldAddBorrowedBookListAfterCheckoutSuccessfully()
+    {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("book1".getBytes());
+        System.setIn(inputStream);
+
+        bibliotecaApp.checkout(bookStorage, borrowedBooks, actual, printStream, new Scanner(inputStream));
+        assertThat(borrowedBooks.getBorrowedBookByName("book1"), is(new Book("book1", "Patricia Aakhus", 1990)));
+    }
+
+    @Test
+    public void shouldReturn0WhenReturnBookSuccessfully()
+    {
+        borrowedBooks.addBorrowedBook(bookStorage.getBookByName("book1"));
+        bookStorage.removeBook("book1");
+
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("book1".getBytes());
+        System.setIn(inputStream);
+
+        int result = bibliotecaApp.returnBook(bookStorage, borrowedBooks, printStream, new Scanner(inputStream));
         assertThat(result, is(0));
     }
 }
