@@ -2,11 +2,14 @@ package com.twu.biblioteca;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.List;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class BibliotecaApp
 {
+    private BookStorage bookStorage;
+    private Collection<Book> bookList;
+
     public static void main(String[] args)
     {
         BibliotecaApp bibliotecaApp = new BibliotecaApp();
@@ -16,6 +19,7 @@ public class BibliotecaApp
 
     public void appStart()
     {
+        bookStorage = new BookStorage();
         PrintStream printStream = new PrintStream(System.out);
         InputStream inputStream = System.in;
         Scanner console = new Scanner(inputStream);
@@ -29,6 +33,8 @@ public class BibliotecaApp
             if ("a".equalsIgnoreCase(UserInput))
                 viewBooks(printStream);                  // show book list
             if ("b".equalsIgnoreCase(UserInput))
+                checkout(console);                       // check out a book by typing the name of the book
+            if ("c".equalsIgnoreCase(UserInput))
                 break;                                   // quit
             else
                 notifyInvalidMessage(printStream);       // show notification
@@ -48,13 +54,12 @@ public class BibliotecaApp
 
     public String getUserInput(Scanner console)
     {
-        String choice = console.nextLine();
-        return choice;
+        return console.nextLine();
     }
 
     public void viewBooks(PrintStream printStream)
     {
-        List<Book> bookList = BookStorage.getBookList();
+        bookList = bookStorage.getBookList();
         for(Book book: bookList)
         {
             printStream.println(book.toString());
@@ -64,5 +69,17 @@ public class BibliotecaApp
     public void notifyInvalidMessage(PrintStream printStream)
     {
         printStream.println("Please select a valid option!");
+    }
+
+    public int checkout(Scanner console)
+    {
+        String name = console.nextLine();
+        if (bookList.contains(bookStorage.getBookByName(name)))
+        {
+            bookStorage.removeBook(name);
+            return 0;                       // remove successfully
+        }
+        else
+            return 1;                       // remove unsuccessfully
     }
 }
