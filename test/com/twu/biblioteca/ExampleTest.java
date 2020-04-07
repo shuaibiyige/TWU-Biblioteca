@@ -1,17 +1,12 @@
 package com.twu.biblioteca;
 
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Scanner;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -73,11 +68,17 @@ public class ExampleTest
     @Test
     public void shouldShowBookList()
     {
-        bibliotecaApp.viewBooks(printStream);
+        bibliotecaApp.viewBooks(actual, printStream);
+
+        verify(printStream).printf("%-10s", "Name");
+        verify(printStream).printf("|%-15s", "Author");
+        verify(printStream).printf("|%-15s", "Author");
 
         for(Book book: actual)
         {
-            verify(printStream).println(book.toString());
+            verify(printStream).printf("%-10s", book.getName());
+            verify(printStream).printf("|%-15s", book.getAuthor());
+            verify(printStream).printf("|%-15s\n", book.getPublishedYear());
         }
     }
 

@@ -35,7 +35,7 @@ public class BibliotecaApp
             String UserInput = getUserInput(console);    // get user's choice
 
             if ("a".equalsIgnoreCase(UserInput))
-                viewBooks(printStream);                  // show book list
+                viewBooks(bookList, printStream);                  // show book list
 
             else if ("b".equalsIgnoreCase(UserInput))
                 if (checkout(bookStorage, borrowedBooks, bookList, printStream, console) == 0)          // check out successfully
@@ -75,12 +75,19 @@ public class BibliotecaApp
         return console.nextLine();
     }
 
-    public void viewBooks(PrintStream printStream)
+    public void viewBooks(Collection<Book> bookList, PrintStream printStream)
     {
+        printStream.println();
+        printStream.printf("%-10s", "Name");
+        printStream.printf("|%-15s", "Author");
+        printStream.printf("|%-15s\n", "Published Year");
         for(Book book: bookList)
         {
-            printStream.println(book.toString());
+            printStream.printf("%-10s", book.getName());
+            printStream.printf("|%-15s", book.getAuthor());
+            printStream.printf("|%-15s\n", book.getPublishedYear());
         }
+        printStream.println();
     }
 
     public void notifyInvalidMessage(PrintStream printStream)
