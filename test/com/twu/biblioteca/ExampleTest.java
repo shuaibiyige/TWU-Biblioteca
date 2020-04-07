@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -37,11 +38,9 @@ public class ExampleTest
     @Test
     public void shouldShowMenu()
     {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream("a".getBytes());
-        System.setIn(inputStream);
-
-        bibliotecaApp.showMenu(printStream, inputStream);
+        bibliotecaApp.showMenu(printStream);
         verify(printStream).println("A. List of books");
+        verify(printStream).println("B. Quit");
     }
 
     @Test
@@ -50,7 +49,7 @@ public class ExampleTest
         ByteArrayInputStream inputStream = new ByteArrayInputStream("a".getBytes());
         System.setIn(inputStream);
 
-        String actual = bibliotecaApp.showMenu(printStream, inputStream);
+        String actual = bibliotecaApp.getUserInput(new Scanner(inputStream));
         assertThat(actual, is("a"));
     }
 
@@ -64,5 +63,12 @@ public class ExampleTest
         {
             verify(printStream).println(book.toString());
         }
+    }
+
+    @Test
+    public void shouldShowInvalidMessage()
+    {
+        bibliotecaApp.notifyInvalidMessage(printStream);
+        verify(printStream).println("Please select a valid option!");
     }
 }

@@ -10,17 +10,29 @@ public class BibliotecaApp
     public static void main(String[] args)
     {
         BibliotecaApp bibliotecaApp = new BibliotecaApp();
+
         bibliotecaApp.appStart();
     }
 
     public void appStart()
     {
         PrintStream printStream = new PrintStream(System.out);
+        InputStream inputStream = System.in;
+        Scanner console = new Scanner(inputStream);
 
         showWelcome(printStream);
         while (true)
-            if ("a".equalsIgnoreCase(showMenu(printStream, System.in)))
-                viewBooks(printStream);
+        {
+            showMenu(printStream);
+            String UserInput = getUserInput(console);    // get user's choice
+
+            if ("a".equalsIgnoreCase(UserInput))
+                viewBooks(printStream);                  // show book list
+            if ("b".equalsIgnoreCase(UserInput))
+                break;                                   // quit
+            else
+                notifyInvalidMessage(printStream);       // show notification
+        }
     }
 
     public void showWelcome(PrintStream printStream)
@@ -28,10 +40,15 @@ public class BibliotecaApp
         printStream.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
     }
 
-    public String showMenu(PrintStream printStream, InputStream inputStream)
+    public void showMenu(PrintStream printStream)
     {
         printStream.println("A. List of books");
-        String choice = new Scanner(System.in).nextLine();
+        printStream.println("B. Quit");
+    }
+
+    public String getUserInput(Scanner console)
+    {
+        String choice = console.nextLine();
         return choice;
     }
 
@@ -42,5 +59,10 @@ public class BibliotecaApp
         {
             printStream.println(book.toString());
         }
+    }
+
+    public void notifyInvalidMessage(PrintStream printStream)
+    {
+        printStream.println("Please select a valid option!");
     }
 }
