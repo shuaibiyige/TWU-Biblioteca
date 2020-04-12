@@ -11,5 +11,6 @@
     <orderEntry type="library" name="junit-4.11" level="project" />
     <orderEntry type="library" name="hamcrest-2.2" level="project" />
     <orderEntry type="library" name="mockito-all-1.9.5" level="project" />
+    <orderEntry type="library" name="fest-swing-1.2" level="project" />
   </component>
 </module>

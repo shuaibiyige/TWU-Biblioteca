@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ExampleTest
+public class BibliotecaTest
 {
     private BibliotecaApp bibliotecaApp;
     private PrintStream printStream;
@@ -37,6 +37,7 @@ public class ExampleTest
         bibliotecaApp.setBookList(bookStorage.getBookList());
         actual = bibliotecaApp.getBookList();
     }
+
     @Test
     public void shouldShowWelcomeMessage()
     {
