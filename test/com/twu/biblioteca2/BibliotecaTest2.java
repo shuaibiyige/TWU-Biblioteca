@@ -5,12 +5,15 @@ import com.twu.biblioteca.BookStorage;
 import com.twu.biblioteca.BorrowedBook;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import javax.swing.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -137,5 +140,38 @@ public class BibliotecaTest2
         BibliotecaApp2 spy = spy(bibliotecaApp2);
         spy.returnDialogHelper(selectionBooks, "book", jTextArea);
         verify(spy, times(1)).returnBook("book1");
+    }
+
+    @Test
+    public void shouldReturnTrueWhenTheAccountIsValid()
+    {
+        assertThat(bibliotecaApp2.isValidAccount("1111-111", "11111111"), is(true));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenTheAccountIsValid()
+    {
+        assertThat(bibliotecaApp2.isValidAccount("1111-111", "22222222"), is(false));
+    }
+
+    @Test
+    public void shouldCallIsValidAccountWhenLoginIsCalled()
+    {
+        BibliotecaApp2 spy = spy(bibliotecaApp2);
+        spy.login();
+        verify(spy).isValidAccount(Mockito.any(String.class), Mockito.any(String.class));
+    }
+
+    @Test
+    public void shouldShowUserInfo()
+    {
+        Account user = new Account("1111-111", "11111111", new Customer("customer1", "abc@gmail.com", 123456));
+        bibliotecaApp2.setUser(user);
+
+        bibliotecaApp2.aboutMe(jTextArea);
+
+        jTextArea.append("Name: customer1\n");
+        jTextArea.append("Email: abc@gmail.com\n");
+        jTextArea.append("Phone number: 123456\n");
     }
 }

@@ -10,8 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.Map;
 
 public class BibliotecaApp2 implements ActionListener
 {
@@ -25,6 +24,8 @@ public class BibliotecaApp2 implements ActionListener
     private MovieStorage movieStorage;
     private BorrowedBook borrowedBooks;
     private BorrowedMovie borrowedMovies;
+
+    private Account user;
 
     public static void main(String[] args)
     {
@@ -43,6 +44,9 @@ public class BibliotecaApp2 implements ActionListener
         borrowedBooks = new BorrowedBook();
         borrowedMovies = new BorrowedMovie();
 
+        boolean isValidUser = login();
+        while (!isValidUser)
+            isValidUser = login();
         showWelcome(textArea);
     }
 
@@ -88,6 +92,30 @@ public class BibliotecaApp2 implements ActionListener
         jFrame.getContentPane().add(BorderLayout.SOUTH, jPanelBottom);
         jFrame.setSize(650, 500);
         jFrame.setVisible(true);
+    }
+
+    public boolean login()
+    {
+        Map<String, String> account = CustomizedDialog.showCustomDialog(jFrame, jFrame);
+        String number = account.get("libraryNumber");
+        String password = account.get("password");
+        return isValidAccount(number, password);
+    }
+
+    public boolean isValidAccount(String number, String password)
+    {
+        boolean result = false;
+        AccountStorage accountStorage = new AccountStorage();
+        Collection<Account> accountList = accountStorage.getAccountList();
+        for (Account account: accountList)
+        {
+            if (account.getLibraryNumber().equals(number) && account.getPassword().equals(password))
+            {
+                user = accountStorage.getAccountByName(number);
+                result = true;
+            }
+        }
+        return result;
     }
 
     public void showWelcome(JTextArea jTextArea)
@@ -181,6 +209,14 @@ public class BibliotecaApp2 implements ActionListener
         borrowedBooks.removeBorrowedBook(name);
     }
 
+    public void aboutMe(JTextArea jTextArea)
+    {
+        jTextArea.append("\n");
+        jTextArea.append("Name: " + user.getCustomer().getName() + "\n");
+        jTextArea.append("Email: " + user.getCustomer().getEmail() + "\n");
+        jTextArea.append("Phone number: " + user.getCustomer().getPhoneNumber() + "\n");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -204,7 +240,7 @@ public class BibliotecaApp2 implements ActionListener
             returnDialogHelper(selectionReturnBook, "book", textArea);
         }
         else if (e.getSource() == aboutMe)
-            textArea.append("clicked5 \n");
+            aboutMe(textArea);
     }
 
     public BookStorage getBookStorage() {
@@ -253,5 +289,13 @@ public class BibliotecaApp2 implements ActionListener
 
     public void setMovies(Collection<Movie> movies) {
         this.movies = movies;
+    }
+
+    public Account getUser() {
+        return user;
+    }
+
+    public void setUser(Account user) {
+        this.user = user;
     }
 }

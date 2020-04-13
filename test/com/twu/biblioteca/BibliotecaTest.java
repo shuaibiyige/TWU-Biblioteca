@@ -91,6 +91,12 @@ public class BibliotecaTest
     }
 
     @Test
+    public void shouldReturnTrueWhenBookNameIsNotValid()
+    {
+        assertThat(bibliotecaApp.isBookNameValid(actual,"book1"), is(true));
+    }
+
+    @Test
     public void shouldReturnFalseWhenBookNameIsNotValid()
     {
         assertThat(bibliotecaApp.isBookNameValid(actual,"aa"), is(false));

@@ -1,5 +1,7 @@
 package com.twu.biblioteca2;
 
+import java.util.Objects;
+
 public class Account
 {
     private String libraryNumber;
@@ -34,5 +36,20 @@ public class Account
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return libraryNumber.equals(account.libraryNumber) &&
+                password.equals(account.password) &&
+                customer.equals(account.customer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(libraryNumber, password, customer);
     }
 }
