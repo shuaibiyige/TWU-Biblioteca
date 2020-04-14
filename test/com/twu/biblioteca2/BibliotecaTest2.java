@@ -70,7 +70,7 @@ public class BibliotecaTest2
 
         for(Book book: bookList)
         {
-            verify(jTextArea).append(book.getName() + " " + book.getAuthor() + " " + book.getPublishedYear() + "\n");
+            verify(jTextArea).append(book.getName() + ",  " + book.getAuthor() + ",  " + book.getPublishedYear() + "\n");
         }
     }
 
@@ -81,7 +81,7 @@ public class BibliotecaTest2
 
         for(Movie movie: movieList)
         {
-            verify(jTextArea).append(movie.getName() + " " + movie.getYear() + " " + movie.getDirector() + " " + movie.getRating() + "\n");
+            verify(jTextArea).append(movie.getName() + ",  " + movie.getYear() + ",  " + movie.getDirector() + ",  " + movie.getRating() + "\n");
         }
     }
 

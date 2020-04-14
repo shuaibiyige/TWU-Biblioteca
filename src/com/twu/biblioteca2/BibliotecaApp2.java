@@ -12,6 +12,8 @@ import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Map;
 
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+
 public class BibliotecaApp2 implements ActionListener
 {
     private JFrame jFrame;
@@ -50,6 +52,7 @@ public class BibliotecaApp2 implements ActionListener
     public void initUI()
     {
         jFrame = new JFrame();
+        jFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         JPanel jPanelTop = new JPanel();
         JPanel jPanelBottom = new JPanel();
         GridLayout layoutBottom = new GridLayout(4, 2);
@@ -142,16 +145,20 @@ public class BibliotecaApp2 implements ActionListener
     public void viewBooks(Collection<Book> bookList, JTextArea jTextArea)
     {
         jTextArea.append("\n");
+        jTextArea.append("Name,  Author,  Published Year \n");
+        jTextArea.append("-------------------------------\n");
         for(Book book: bookList) {
-            jTextArea.append(book.getName() + " " + book.getAuthor() + " " + book.getPublishedYear() + "\n");
+            jTextArea.append(book.getName() + ",  " + book.getAuthor() + ",  " + book.getPublishedYear() + "\n");
         }
     }
 
     public void viewMovies(Collection<Movie> movieList, JTextArea jTextArea)
     {
         jTextArea.append("\n");
+        jTextArea.append("Name,  Year,  Director,  Rating \n");
+        jTextArea.append("--------------------------------\n");
         for(Movie movie: movieList) {
-            jTextArea.append(movie.getName() + " " + movie.getYear() + " " + movie.getDirector() + " " + movie.getRating() + "\n");
+            jTextArea.append(movie.getName() + ",  " + movie.getYear() + ",  " + movie.getDirector() + ",  " + movie.getRating() + "\n");
         }
     }
 

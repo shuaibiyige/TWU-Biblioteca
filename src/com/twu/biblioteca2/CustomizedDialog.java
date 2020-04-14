@@ -56,12 +56,10 @@ public class CustomizedDialog
 
         JPanel panel = new JPanel();             // for input area
         JPanel panel2 = new JPanel();            // for button area
-        //JPanel panel3 = new JPanel();            // for error message area
         GridLayout layout = new GridLayout(2, 2);
         panel.setLayout(layout);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        //panel3.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
 
         panel.add(number);
         panel.add(numberInput);
@@ -71,11 +69,8 @@ public class CustomizedDialog
         panel2.add(okBtn);
         panel2.add(cancelBtn);
 
-        //panel3.add(new JLabel("Library number or password is wrong"));
-
         dialog.getContentPane().add(BorderLayout.NORTH, panel);
         dialog.getContentPane().add(BorderLayout.SOUTH, panel2);
-        //dialog.getContentPane().add(BorderLayout, panel3);
         dialog.setVisible(true);
 
         return user;
