@@ -6,9 +6,10 @@ import java.util.Map;
 
 public class BorrowedMovie
 {
-    private static Map<String, Movie> borrowedMovieList;
+    private Map<String, Movie> borrowedMovieList;
 
-    static {
+    public BorrowedMovie()
+    {
         borrowedMovieList = new HashMap<String, Movie>();
     }
 

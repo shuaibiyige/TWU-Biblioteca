@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CustomizedDialog
 {
-    public static Map<String, String> showCustomDialog(Frame owner, Component parentComponent)
+    public static Map<String, String> showCustomDialog(final Frame owner, Component parentComponent)
     {
         final Map<String, String> user = new HashMap<String, String>();
 
@@ -43,22 +43,25 @@ public class CustomizedDialog
             }
         });
 
-        JButton cancelBtn = new JButton("Cancel");
+        JButton cancelBtn = new JButton("Exit");
         cancelBtn.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                dialog.dispose();
+                System.exit(0);
+                //dialog.dispose();
             }
         });
 
         JPanel panel = new JPanel();             // for input area
         JPanel panel2 = new JPanel();            // for button area
+        //JPanel panel3 = new JPanel();            // for error message area
         GridLayout layout = new GridLayout(2, 2);
         panel.setLayout(layout);
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-        panel2.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        //panel3.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
 
         panel.add(number);
         panel.add(numberInput);
@@ -68,8 +71,11 @@ public class CustomizedDialog
         panel2.add(okBtn);
         panel2.add(cancelBtn);
 
+        //panel3.add(new JLabel("Library number or password is wrong"));
+
         dialog.getContentPane().add(BorderLayout.NORTH, panel);
         dialog.getContentPane().add(BorderLayout.SOUTH, panel2);
+        //dialog.getContentPane().add(BorderLayout, panel3);
         dialog.setVisible(true);
 
         return user;

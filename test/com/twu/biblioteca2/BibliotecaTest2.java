@@ -3,17 +3,15 @@ package com.twu.biblioteca2;
 import com.twu.biblioteca.Book;
 import com.twu.biblioteca.BookStorage;
 import com.twu.biblioteca.BorrowedBook;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import javax.swing.*;
 
 import java.util.Collection;
-import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -50,6 +48,8 @@ public class BibliotecaTest2
 
         bibliotecaApp2.setBorrowedMovies(new BorrowedMovie());
         borrowedMovies = bibliotecaApp2.getBorrowedMovies();
+
+        bibliotecaApp2.setUser(new Account("1111-111", "11111111", new Customer("customer1", "abc@gmail.com", 123456), new BorrowedBook(), new BorrowedMovie()));
 
         jTextArea = mock(JTextArea.class);
     }
@@ -145,27 +145,28 @@ public class BibliotecaTest2
     @Test
     public void shouldReturnTrueWhenTheAccountIsValid()
     {
-        assertThat(bibliotecaApp2.isValidAccount("1111-111", "11111111"), is(true));
+        assertThat(bibliotecaApp2.login(), is(true));
     }
 
     @Test
-    public void shouldReturnFalseWhenTheAccountIsValid()
-    {
-        assertThat(bibliotecaApp2.isValidAccount("1111-111", "22222222"), is(false));
-    }
-
-    @Test
-    public void shouldCallIsValidAccountWhenLoginIsCalled()
+    public void shouldPopUpErrorMessageWhenTheAccountIsNotValid()
     {
         BibliotecaApp2 spy = spy(bibliotecaApp2);
         spy.login();
-        verify(spy).isValidAccount(Mockito.any(String.class), Mockito.any(String.class));
+        verify(spy).loginFailedMessage();
+    }
+
+    @Test
+    public void userShouldBeNullAfterLogout()
+    {
+        bibliotecaApp2.logout();
+        Assert.assertNull(bibliotecaApp2.getUser());
     }
 
     @Test
     public void shouldShowUserInfo()
     {
-        Account user = new Account("1111-111", "11111111", new Customer("customer1", "abc@gmail.com", 123456));
+        Account user = new Account("1111-111", "11111111", new Customer("customer1", "abc@gmail.com", 123456), new BorrowedBook(), new BorrowedMovie());
         bibliotecaApp2.setUser(user);
 
         bibliotecaApp2.aboutMe(jTextArea);

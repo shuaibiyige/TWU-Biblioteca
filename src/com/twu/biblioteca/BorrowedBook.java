@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class BorrowedBook
 {
-    private static Map<String, Book> borrowedBookList;
+    private Map<String, Book> borrowedBookList;
 
-    static {
+    public BorrowedBook() {
         borrowedBookList = new HashMap<String, Book>();
     }
 
