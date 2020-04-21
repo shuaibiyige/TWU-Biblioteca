@@ -4,5 +4,6 @@ List: Release 1,
       Release 2, 
       The Biblioteca Database.
       
-The latest update: create an enum class to represent user's choice; extract user's choice into a new method called "doAction"; 
+The latest update: create an enum class to represent user's choice; 
+                   extract user's choice into a new method called "doAction"; 
                    use boolean to represent the result of action instead of int.
