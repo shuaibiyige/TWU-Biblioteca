@@ -108,8 +108,8 @@ public class BibliotecaTest
         ByteArrayInputStream inputStream = new ByteArrayInputStream("book1".getBytes());
         System.setIn(inputStream);
 
-        int result = bibliotecaApp.checkout(bookStorage, borrowedBooks, actual, printStream, new Scanner(inputStream));
-        assertThat(result, is(0));
+        boolean result = bibliotecaApp.checkout(bookStorage, borrowedBooks, actual, printStream, new Scanner(inputStream));
+        assertThat(result, is(true));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class BibliotecaTest
         ByteArrayInputStream inputStream = new ByteArrayInputStream("book1".getBytes());
         System.setIn(inputStream);
 
-        int result = bibliotecaApp.returnBook(bookStorage, borrowedBooks, printStream, new Scanner(inputStream));
-        assertThat(result, is(0));
+        boolean result = bibliotecaApp.returnBook(bookStorage, borrowedBooks, printStream, new Scanner(inputStream));
+        assertThat(result, is(true));
     }
 }

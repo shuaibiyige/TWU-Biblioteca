@@ -29,32 +29,8 @@ public class BibliotecaApp
         Scanner console = new Scanner(inputStream);
 
         showWelcome(printStream);
-        while (true)
-        {
-            showMenu(printStream);
-            String UserInput = getUserInput(console);    // get user's choice
 
-            if ("a".equalsIgnoreCase(UserInput))
-                viewBooks(bookList, printStream);                  // show book list
-
-            else if ("b".equalsIgnoreCase(UserInput))
-                if (checkout(bookStorage, borrowedBooks, bookList, printStream, console) == 0)          // check out successfully
-                    printStream.println("Thank you! Enjoy the book");
-                else
-                    printStream.println("Sorry, that book is not available");      // check out unsuccessfully
-
-            else if ("c".equalsIgnoreCase(UserInput))
-                if (returnBook(bookStorage, borrowedBooks, printStream, console) == 0)
-                    printStream.println("Thank you for returning the book");       // return a book successfully
-                else
-                    printStream.println("That is not a valid book to return");     // return a book unsuccessfully
-
-            else if ("d".equalsIgnoreCase(UserInput))
-                break;                                   // quit
-
-            else
-                notifyInvalidMessage(printStream);       // show notification
-        }
+        doAction(printStream, console);      // do action based on user's choice
     }
 
     public void showWelcome(PrintStream printStream)
@@ -73,6 +49,36 @@ public class BibliotecaApp
     public String getUserInput(Scanner console)
     {
         return console.nextLine();
+    }
+
+    public void doAction(PrintStream printStream, Scanner console)
+    {
+        while (true)
+        {
+            showMenu(printStream);
+            String userInput = getUserInput(console);              // get user's choice
+
+            if (UserChoice.BOOKLIST.getChoice().equalsIgnoreCase(userInput))
+                viewBooks(bookList, printStream);                  // show book list
+
+            else if (UserChoice.CHECKOUT.getChoice().equalsIgnoreCase(userInput))
+                if (checkout(bookStorage, borrowedBooks, bookList, printStream, console))          // check out successfully
+                    printStream.println("Thank you! Enjoy the book");
+                else
+                    printStream.println("Sorry, that book is not available");      // check out unsuccessfully
+
+            else if (UserChoice.RETURN.getChoice().equalsIgnoreCase(userInput))
+                if (returnBook(bookStorage, borrowedBooks, printStream, console))
+                    printStream.println("Thank you for returning the book");       // return a book successfully
+                else
+                    printStream.println("That is not a valid book to return");     // return a book unsuccessfully
+
+            else if (UserChoice.QUIT.getChoice().equalsIgnoreCase(userInput))
+                break;                                                             // quit
+
+            else
+                notifyInvalidMessage(printStream);       // show notification
+        }
     }
 
     public void viewBooks(Collection<Book> bookList, PrintStream printStream)
@@ -95,7 +101,7 @@ public class BibliotecaApp
         printStream.println("Please select a valid option!");
     }
 
-    public int checkout(BookStorage bookStorage, BorrowedBook borrowedBooks, Collection<Book> bookList, PrintStream printStream, Scanner console)
+    public boolean checkout(BookStorage bookStorage, BorrowedBook borrowedBooks, Collection<Book> bookList, PrintStream printStream, Scanner console)
     {
         printStream.println("Please select a book");
 
@@ -106,10 +112,10 @@ public class BibliotecaApp
             borrowedBooks.addBorrowedBook(bookStorage.getBookByName(name));      // add to borrowed book list
             bookStorage.removeBook(name);
 
-            return 0;                                                // remove successfully
+            return true;                                                // remove successfully
         }
         else
-            return 1;                                                // remove unsuccessfully
+            return false;                                                // remove unsuccessfully
     }
 
     public boolean isBookNameValid(Collection<Book> bookList, String name)
@@ -123,7 +129,7 @@ public class BibliotecaApp
         return result;
     }
 
-    public int returnBook(BookStorage bookStorage, BorrowedBook borrowedBooks, PrintStream printStream, Scanner console)
+    public boolean returnBook(BookStorage bookStorage, BorrowedBook borrowedBooks, PrintStream printStream, Scanner console)
     {
         printStream.println("Please enter the book's name you want to return");
         String name = console.nextLine();
@@ -132,9 +138,9 @@ public class BibliotecaApp
         {
             bookStorage.addBook(borrowedBooks.getBorrowedBookByName(name));
             borrowedBooks.removeBorrowedBook(name);
-            return 0;                                                          // remove successfully
+            return true;                                                          // remove successfully
         }
-        return 1;                                                              // remove unsuccessfully
+        return false;                                                              // remove unsuccessfully
     }
 
     public BookStorage getBookStorage() {
